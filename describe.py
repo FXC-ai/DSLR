@@ -1,73 +1,119 @@
 import csv
 from pprint import pprint
+from math import sqrt
 
 class Describe :
 
     statistics = dict()
     fields_name = list()
 
-    def dict_statistic(self):
-        return {"Count" : 0, "Mean": 0.0, "Std" : 0.0, "Max" : 0.0, "Quartile1": 0.0, "Quartile2":0.0, "Quartile3":0.0, "Min":0.0}
+    def mark_accumulator(self, field, mark):
+        self.statistics[field]["Mean"] += float(mark)
+
+    def min(self, field, mark):
+        if (self.statistics[field]["Min"] is None or float(self.statistics[field]["Min"]) > float(mark)):
+            self.statistics[field]["Min"] = mark 
+
+    def max(self, field, mark):
+        if (self.statistics[field]["Max"] is None or float(self.statistics[field]["Max"]) < float(mark)):
+            self.statistics[field]["Max"] = mark 
+
+    def collect_data(self, field, ligne):
+        self.mark_accumulator(field, mark=ligne[field])
+        self.min(field, ligne[field])
+        self.max(field, ligne[field])
+        self.statistics[field]["values"].append(float(ligne[field]))
+
+    def std(self, mean, obs, card):
+        acc = 0.0
+        for value in obs:
+            acc += (value - mean)**2
+        return sqrt(acc / card)
 
     def read_csv(self):
-        with open('dataset_train.csv', 'r', encoding='utf-8') as f:
+        with open('dataset_train_batch.csv', 'r', encoding='utf-8') as f:
             lecteur = csv.DictReader(f, delimiter=',')
             fieldnames = lecteur.fieldnames
 
-
-            index = list()
-            hogwarts_house = list()
-            first_name = list()
-            last_name = list()
-            birthday = list()
-            best_hand = list()
-            arithmancy = list()
-            astronomy = list()
-            herbology = list()
-            divination = list()
-            muggle_studies = list()
-            ancient_runes = list()
-            history_of_magic = list()
-            transfiguration = list()
-            potions = list()
-            care_of_magical_creatures = list()
-            charms = list()
-            flying = list()
+            
 
             for field in fieldnames:
-                self.statistics[field] = {"Count" : 0, "Mean": 0.0, "Std" : 0.0, "Max" : 0.0, "Quartile1": 0.0, "Quartile2":0.0, "Quartile3":0.0, "Min":0.0}
+                self.statistics[field] = {
+                        "Count" : 0,
+                        "Mean": 0.0,
+                        "Std" : 0.0,
+                        "Max" : None,
+                        "Quartile1": 0.0,
+                        "Quartile2":0.0,
+                        "Quartile3":0.0,
+                        "Min":None,
+                        "values":[]
+                        }
 
-            pprint(self.statistics)
+            #pprint(self.statistics)
 
             for ligne in lecteur:
+                #print("Nous consdierons cette ligne : ", ligne["First Name"])
                 for field in fieldnames:
                     if ligne[field] != "":
                         self.statistics[field]["Count"] += 1
-                
-                index.append(ligne["Index"])
-                hogwarts_house.append(ligne["Hogwarts House"])
-                first_name.append(ligne["First Name"])
-                last_name.append(ligne["Last Name"])
-                birthday.append(ligne["Birthday"])
-                best_hand.append(ligne["Best Hand"])
-                arithmancy.append(ligne["Arithmancy"])
-                astronomy.append(ligne["Astronomy"])
-                herbology.append(ligne["Herbology"])
-                divination.append(ligne["Divination"])
-                muggle_studies.append(ligne["Muggle Studies"])
-                ancient_runes.append(ligne["Ancient Runes"])
-                history_of_magic.append(ligne["History of Magic"])
-                transfiguration.append(ligne["Transfiguration"])
-                potions.append(ligne["Potions"])
-                care_of_magical_creatures.append(ligne["Care of Magical Creatures"])
-                charms.append(ligne["Charms"])
-                flying.append(ligne["Flying"])
-                if (ligne["Divination"] == ""):
-                    print("Maquant = ", ligne["Index"])
-                    print(ligne)
+                        # print("value = ", ligne[field])
+                        match field:
+                            case "Index":
+                                pass
+                            case "Hogwarts House":
+                                pass
+                            case "First Name":
+                                pass
+                            case "Last Name":
+                                pass
+                            case "Birthday":
+                                pass
+                            case "Best Hand":
+                                pass
+                            case "Arithmancy":
+                                self.collect_data(field, ligne)
+                            case "Astronomy":
+                                self.collect_data(field, ligne)
+                            case "Herbology":
+                                self.collect_data(field, ligne)
+                            case "Defense Against the Dark Arts":
+                                self.collect_data(field, ligne)
+                            case "Divination":
+                                self.collect_data(field, ligne)
+                            case "Muggle Studies":
+                                self.collect_data(field, ligne)
+                            case "Ancient Runes":
+                                self.collect_data(field, ligne)
+                            case "History of Magic":
+                                self.collect_data(field, ligne)
+                            case "Transfiguration":
+                                self.collect_data(field, ligne)
+                            case "Potions":
+                                self.collect_data(field, ligne)
+                            case "Care of Magical Creatures":
+                                self.collect_data(field, ligne)
+                            case "Charms":
+                                self.collect_data(field, ligne)
+                            case "Flying":
+                                self.collect_data(field, ligne)
+                            case _:
+                                pass
 
-            print(len(charms))
-            print(len(index))
+
+        for matter in self.statistics:
+            if(matter not in ["First Name", "Last Name", "Index", "Hogwarts House", "Birthday", "Best Hand"]):
+                self.statistics[matter]['Mean'] = self.statistics[matter]["Mean"] / self.statistics[matter]["Count"]
+                self.statistics[matter]["values"].sort()
+                print("index = ", int(self.statistics[matter]["Count"] / 4), " ", self.statistics[matter]["values"])
+                self.statistics[matter]["Quartile1"] = self.statistics[matter]["values"][int(self.statistics[matter]["Count"] / 4)]
+                self.statistics[matter]["Quartile2"] = self.statistics[matter]["values"][int(self.statistics[matter]["Count"] / 4) * 2]
+                self.statistics[matter]["Quartile3"] = self.statistics[matter]["values"][int(self.statistics[matter]["Count"] / 4) * 3]
+                self.statistics[matter]["Std"] = self.std(self.statistics[matter]["Mean"], self.statistics[matter]["values"], self.statistics[matter]["Count"])
+                # print("matter ", matter, self.statistics[matter]["Mean"])
+                # matter["Mean"] = matter["Mean"] / matter["Count"]
+        pprint(self.statistics)
+
 
 describe = Describe()
 
