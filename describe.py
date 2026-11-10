@@ -34,7 +34,7 @@ class Describe :
         header = "               "
         for matter in self.fieldnames:
             if(matter not in ["First Name", "Last Name", "Index", "Hogwarts House", "Birthday", "Best Hand"]):
-                header += matter + "     "
+                header += matter[:20] + (23 - len(matter[:20])) * " "
         print(header)
 
         stats = ["Count", "Mean",  "Std", "Min", "Min", "Quartile1", "Quartile2", "Quartile3", "Max"]
@@ -43,7 +43,7 @@ class Describe :
             statline = stat + space
             for matter in self.statistics:
                 if(matter not in ["First Name", "Last Name", "Index", "Hogwarts House", "Birthday", "Best Hand"]):
-                    statline += str(self.statistics[matter][stat]) + " "
+                    statline += str(self.statistics[matter][stat]) + (23 - len(str(self.statistics[matter][stat]))) * " "
             print(statline)
 
 
