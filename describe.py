@@ -5,7 +5,7 @@ from math import sqrt
 class Describe :
 
     statistics = dict()
-    fields_name = list()
+    fieldnames = list()
 
     def mark_accumulator(self, field, mark):
         self.statistics[field]["Mean"] += float(mark)
@@ -30,14 +30,29 @@ class Describe :
             acc += (value - mean)**2
         return sqrt(acc / card)
 
+    def display(self):
+        header = "               "
+        for matter in self.fieldnames:
+            if(matter not in ["First Name", "Last Name", "Index", "Hogwarts House", "Birthday", "Best Hand"]):
+                header += matter + "     "
+        print(header)
+
+        stats = ["Count", "Mean",  "Std", "Min", "Min", "Quartile1", "Quartile2", "Quartile3", "Max"]
+        for stat in stats:
+            space = (15 - len(stat)) * " "
+            statline = stat + space
+            for matter in self.statistics:
+                if(matter not in ["First Name", "Last Name", "Index", "Hogwarts House", "Birthday", "Best Hand"]):
+                    statline += str(self.statistics[matter][stat]) + " "
+            print(statline)
+
+
     def read_csv(self):
         with open('dataset_train_batch.csv', 'r', encoding='utf-8') as f:
             lecteur = csv.DictReader(f, delimiter=',')
-            fieldnames = lecteur.fieldnames
+            self.fieldnames = lecteur.fieldnames
 
-            
-
-            for field in fieldnames:
+            for field in self.fieldnames:
                 self.statistics[field] = {
                         "Count" : 0,
                         "Mean": 0.0,
@@ -54,7 +69,7 @@ class Describe :
 
             for ligne in lecteur:
                 #print("Nous consdierons cette ligne : ", ligne["First Name"])
-                for field in fieldnames:
+                for field in self.fieldnames:
                     if ligne[field] != "":
                         self.statistics[field]["Count"] += 1
                         # print("value = ", ligne[field])
@@ -118,3 +133,4 @@ class Describe :
 describe = Describe()
 
 describe.read_csv()
+describe.display()
