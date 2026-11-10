@@ -37,7 +37,7 @@ class Describe :
                 header += matter[:20] + (23 - len(matter[:20])) * " "
         print(header)
 
-        stats = ["Count", "Mean",  "Std", "Min", "Min", "Quartile1", "Quartile2", "Quartile3", "Max"]
+        stats = ["Count", "Mean",  "Std", "Min", "Quartile1", "Quartile2", "Quartile3", "Max"]
         for stat in stats:
             space = (15 - len(stat)) * " "
             statline = stat + space
@@ -48,7 +48,7 @@ class Describe :
 
 
     def read_csv(self):
-        with open('dataset_train_batch.csv', 'r', encoding='utf-8') as f:
+        with open('dataset_train.csv', 'r', encoding='utf-8') as f:
             lecteur = csv.DictReader(f, delimiter=',')
             self.fieldnames = lecteur.fieldnames
 
