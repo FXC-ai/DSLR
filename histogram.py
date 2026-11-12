@@ -2,19 +2,37 @@ import seaborn as sns
 import matplotlib
 import pandas as pd
 
-
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', 1000)
 dataset = pd.read_csv('dataset_train.csv')
 
-print(dataset)
 
 dataset_house_matter = dataset[["Hogwarts House", "Arithmancy","Astronomy","Herbology","Defense Against the Dark Arts","Divination","Muggle Studies","Ancient Runes","History of Magic","Transfiguration","Potions","Care of Magical Creatures","Charms","Flying"]]
 
-resultat = dataset_house_matter.groupby('Hogwarts House')[["Arithmancy","Astronomy","Herbology","Defense Against the Dark Arts","Divination","Muggle Studies","Ancient Runes","History of Magic","Transfiguration","Potions","Care of Magical Creatures","Charms","Flying"]].std()
+matters = ["Arithmancy","Astronomy","Herbology","Defense Against the Dark Arts","Divination","Muggle Studies","Ancient Runes","History of Magic","Transfiguration","Potions","Care of Magical Creatures","Charms","Flying"]
 
-print(resultat.head(), type(resultat))
+resultat = dataset_house_matter.groupby("Hogwarts House")[
+    [
+        "Arithmancy",
+    ]
+].sum()
+
+resultat = resultat.T
+
+resultat = resultat.reset_index()
+
+print(resultat)
 
 
-data = {
+resultat = resultat.melt()
+
+print(resultat.head(25))
+
+resultat.rename(columns={'Hogwarts House' : 'value'}, inplace=True)
+
+# resultat.plot(kind='bar')
+
+""" data = {
     "Categorie": ["A", "A", "A", "A", "B", "B", "B", "B", "C", "C", "C", "C"],
     "SousCategorie": ["S1", "S2", "S3", "S4", "S1", "S2", "S3", "S4", "S1", "S2", "S3", "S4"],
     "Valeur": [10, 15, 8, 12, 5, 20, 14, 9, 18, 12, 16, 11]
@@ -22,7 +40,6 @@ data = {
 
 df = pd.DataFrame(data)
 
-print(df)
 
 sns.set_theme()
 
@@ -32,5 +49,5 @@ sns.barplot(
     y="Valeur",
     hue="SousCategorie"
 )
-
+"""
 matplotlib.pyplot.show()
