@@ -120,14 +120,14 @@ class Describe :
             if(matter not in ["First Name", "Last Name", "Index", "Hogwarts House", "Birthday", "Best Hand"]):
                 self.statistics[matter]['Mean'] = self.statistics[matter]["Mean"] / self.statistics[matter]["Count"]
                 self.statistics[matter]["values"].sort()
-                print("index = ", int(self.statistics[matter]["Count"] / 4), " ", self.statistics[matter]["values"])
+                #print("index = ", int(self.statistics[matter]["Count"] / 4), " ", self.statistics[matter]["values"])
                 self.statistics[matter]["Quartile1"] = self.statistics[matter]["values"][int(self.statistics[matter]["Count"] / 4)]
                 self.statistics[matter]["Quartile2"] = self.statistics[matter]["values"][int(self.statistics[matter]["Count"] / 4) * 2]
                 self.statistics[matter]["Quartile3"] = self.statistics[matter]["values"][int(self.statistics[matter]["Count"] / 4) * 3]
                 self.statistics[matter]["Std"] = self.std(self.statistics[matter]["Mean"], self.statistics[matter]["values"], self.statistics[matter]["Count"])
                 # print("matter ", matter, self.statistics[matter]["Mean"])
                 # matter["Mean"] = matter["Mean"] / matter["Count"]
-        pprint(self.statistics)
+        #pprint(self.statistics)
 
 
 describe = Describe()
