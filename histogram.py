@@ -3,11 +3,14 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 
 import pandas as pd
-
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', 1000)
 
 # https://mrmint.fr/logistic-regression-machine-learning-introduction-simple
 pd.set_option('display.width', 1000)
 dataset = pd.read_csv('dataset_train.csv')
+
+print(dataset)
 matters = [
     "Arithmancy",
     "Astronomy",
@@ -23,6 +26,7 @@ matters = [
     "Charms",
     "Flying"]
 
+
 hogwarts_house = ["Hufflepuff", "Gryffindor","Slytherin","Ravenclaw"]
 hogwarts_house_colors = {"Hufflepuff":"#ECD75B", "Gryffindor":"#AA0001","Slytherin":"#3B0B65","Ravenclaw":"#144B09"}
 nb_row = 4
@@ -31,7 +35,7 @@ nb_col = 4
 
 dataset_matter = dataset[["Hogwarts House", "Arithmancy","Astronomy","Herbology","Defense Against the Dark Arts","Divination","Muggle Studies","Ancient Runes","History of Magic","Transfiguration","Potions","Care of Magical Creatures","Charms","Flying"]]
 
-print (dataset_matter)
+
 
 fig = make_subplots(
     rows=nb_row, 
@@ -41,11 +45,10 @@ fig = make_subplots(
 for idx, matter in enumerate(matters):
     row = (idx // nb_row) + 1
     col_pos = (idx % nb_col) + 1
-    print(matter, row, col_pos)
 
     for house in hogwarts_house:
         subset = dataset_matter[dataset_matter["Hogwarts House"] == house]
-        print(subset)
+
         fig.add_trace(
             go.Histogram
             (
