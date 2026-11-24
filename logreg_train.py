@@ -44,10 +44,10 @@ dataset_features_z = (dataset_features[feature_cols] - dataset_features[feature_
 # print(dataset_features_z)
 
 data_bidon = {
-    "Arithmancy": [-1.24552,  -1.014194,  0.878628],
-    "Astronomy" : [-1.055434, -1.137535,  1.365690],
-    "Herbology" : [-1.554729, -0.780078,  1.261379 ],
-    "Charms"    : [-1.040544, -1.533799,  1.830165]
+    "Arithmancy": [-1.245520, -1.014194, 0.878628],
+    "Astronomy" : [-1.055434, -1.137535, 1.365690],
+    "Herbology" : [-1.554729, -0.780078, 1.261379],
+    "Charms"    : [-1.040544, -1.533799, 1.830165]
 }
 
 weights_bidon = np.array([1.1, 0.9, .07, 1.4])
