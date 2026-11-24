@@ -28,7 +28,7 @@ matters = [
 
 
 hogwarts_house = ["Hufflepuff", "Gryffindor","Slytherin","Ravenclaw"]
-hogwarts_house_colors = {"Hufflepuff":"#ECD75B", "Gryffindor":"#AA0001","Slytherin":"#3B0B65","Ravenclaw":"#144B09"}
+hogwarts_house_colors = {"Hufflepuff":"#ECD75B", "Gryffindor":"#AA0001","Slytherin":"#21520B","Ravenclaw":"#2A6CC4"}
 nb_row = 4
 nb_col = 4
 
