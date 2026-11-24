@@ -68,9 +68,8 @@ fig = go.Figure(data=go.Splom(
 
 
 fig.update_layout(
-    margin=dict(l=200)  # Augmente l'espace à gauche (valeur par défaut : 80)
-)
-fig.update_layout(
+    margin=dict(l=200),  # Augmente l'espace à gauche (valeur par défaut : 80)
+    height=1400,
     title=dict(text='Pair of marks for each matter'),
 )
 

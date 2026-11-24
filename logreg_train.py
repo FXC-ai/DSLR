@@ -1,4 +1,3 @@
-from sklearn.linear_model import LogisticRegression
 import pandas as pd
 from math import log
 from math import exp
@@ -42,38 +41,40 @@ dataset_features = dataset[
 
 dataset_features_z = (dataset_features[feature_cols] - dataset_features[feature_cols].mean()) / dataset_features[feature_cols].std()
 #print(dataset_features)
-#print(dataset_features_z)
-
+# print(dataset_features_z)
 
 data_bidon = {
-    "Arithmancy": [18.0, 2.0, 16.0],
-    "Astronomy" : [7, 12, 14],
-    "Herbology" : [2, 20, 4],
-    "Charms"    : [17, 10, 9]
+    "Arithmancy": [-1.24552,  -1.014194,  0.878628],
+    "Astronomy" : [-1.055434, -1.137535,  1.365690],
+    "Herbology" : [-1.554729, -0.780078,  1.261379 ],
+    "Charms"    : [-1.040544, -1.533799,  1.830165]
 }
 
-weights_bidon = np.array([1000, 100, 10, 1])
+weights_bidon = np.array([1.1, 0.9, .07, 1.4])
 
-df_bidon = pd.DataFrame(data_bidon)
-print(df_bidon.to_numpy())
+data_bidon_r = np.array([0,0,1])
 
-print(df_bidon)
-print("\n")
-print(weights_bidon)
-print("\n")
 
-def model(dataset, weights : pd.Series):
+df_bidon = pd.DataFrame(data_bidon).to_numpy()
+
+def model(dataset, weights ):
     return np.sum(dataset * weights, axis = 1)
-    
-print(model(df_bidon, weights_bidon))
 
-def sigmoid (observation : pd.Series, weights : pd.Series):
-    return 1 / (1 + exp(model(observation=observation, weights=weights)))
+print ("model\n", model(df_bidon, weights_bidon),"\n")
 
-def loss(dataset : pd.DataFrame ,house_hogwart : int, observation : pd.Series, weights : pd.Series):
+def sigmoid (observations, weights):
+    return 1 / (1 + np.exp(model(observations, weights)))
     
-    for index, row in dataset.iterrows():
-        print(index, row["colonne_a"])
-    #dataset * weights
-    #return [log(sigmoid(observation, weights)) * house_hogwart ] + [(1 - house_hogwart) * log(1 - sigmoid(observation, weights))]
+print("sigmoid\n", sigmoid(df_bidon, weights_bidon), "\n")
+
+def loss(observations, weights, result):
+    return np.sum( ((np.log(sigmoid(observations, weights))) * data_bidon_r) + (  (1 - (np.log(sigmoid(observations, weights)))) * (1 - result)   ) ) / (observations.shape[0])
+    
+print(loss(df_bidon, weights_bidon, data_bidon_r))
+
+#print(np.log(sigmoid(observations, weights)))
+
+
+
+
 
