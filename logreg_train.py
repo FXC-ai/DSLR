@@ -62,18 +62,10 @@ print("\n")
 print(weights_bidon)
 print("\n")
 
-def df_model(dataset, weights : pd.Series):
-    r = dataset * weights
-    print(r)
-    s = np.sum(dataset * weights, axis = 1)
-    print(s)
-
-df_model(df_bidon, weights_bidon)
-
-def model(observation : pd.Series, weights : pd.Series):
-    return observation * weights
-
-#print(model(pd.Series([1, 2, 3]), pd.Series([1, 2, 3])))
+def model(dataset, weights : pd.Series):
+    return np.sum(dataset * weights, axis = 1)
+    
+print(model(df_bidon, weights_bidon))
 
 def sigmoid (observation : pd.Series, weights : pd.Series):
     return 1 / (1 + exp(model(observation=observation, weights=weights)))
