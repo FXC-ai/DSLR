@@ -19,7 +19,7 @@ feature_cols = [
         "Flying"
     ]
 
-dataset = pd.read_csv('dataset_train.csv')
+dataset = pd.read_csv('dataset_train.csv').dropna()
 
 dataset_features = dataset[
         [
@@ -41,29 +41,14 @@ dataset_features = dataset[
 
 dataset_y = dataset["Hogwarts House"]
 
-mapping = {"Slytherin" : 0,"Gryffindor":0, "Hufflepuff":0, "Ravenclaw":1}
-print(dataset_y)
-
+mapping = {"Slytherin" : 0, "Gryffindor":0, "Hufflepuff":0, "Ravenclaw":1}
 dataset_y = dataset_y.replace(mapping)
+dataset_y = dataset_y.to_numpy()
 
 dataset_features_z = (dataset_features[feature_cols] - dataset_features[feature_cols].mean()) / dataset_features[feature_cols].std()
-print(dataset_y)
-print(dataset_features_z)
+dataset_features_z = dataset_features_z.to_numpy()
 
-datas = np.array(
-    [
-         #arithman  #charms    #defense
-        [-1.245520, -1.014194, 0.878628], # harry Potter
-        [-1.055434, -1.137535, 1.365690], # Hermione Granger
-        [-1.554729, -0.780078, 1.261379], # Ron Weasley
-        [-1.040544, -1.533799, 1.830165]  # Neuville Londubat
-    ])
-
-# print(" nb line ", np.shape(datas)[0], " nb col ", np.shape(datas)[1])
-
-thetas = np.array([4, 5, 6])
-
-y = np.array([0,0,0,1])
+thetas = np.zeros(np.shape(dataset_features_z)[1])
 
 def sigmoid (x):
     return 1/ (1 + exp(-x))
@@ -119,7 +104,7 @@ def train (datas, thetas, y, learning_rate):
     if n_features != n_thetas:
         raise ValueError(f"loss: le nombre de features ({n_features}) ne correspond pas au nombre de thetas ({n_thetas})")   
 
-    new_theta = [0] * n_features
+    new_theta = np.zeros(n_features)
 
     # on va s occuper de la mise a jour de chaque theta un par un
     i_features = 0
@@ -134,27 +119,25 @@ def train (datas, thetas, y, learning_rate):
 
         new_theta [i_features] = thetas[i_features] - learning_rate * errors
 
-    print(new_theta)
+    
+    return new_theta
 
 #print(loss(datas, thetas, y))
 
-train(datas, thetas, y, 0.01)
+
+print(thetas)
+for i in range(3000):
+    lossii = loss(dataset_features_z, thetas, dataset_y)
+    thetas = train(dataset_features_z, thetas, dataset_y, 0.01)
+    if i % 10 == 0:
+        print(i, " : ", lossii)
 
 
-# print ("model\n", model(df_bidon, weights_bidon),"\n")
 
-# def sigmoid (observations, weights):
-#    return 1 / (1 + np.exp(model(observations, weights)))
-    
-# print("sigmoid\n", sigmoid(df_bidon, weights_bidon), "\n")
+print(thetas)
 
-# def loss(observations, weights, result):
-#    return np.sum( ((np.log(sigmoid(observations, weights))) * data_bidon_r) + (  (1 - (np.log(sigmoid(observations, weights)))) * (1 - result)   ) ) / (observations.shape[0])
-    
-# print(loss(df_bidon, weights_bidon, data_bidon_r))
 
-#print(np.log(sigmoid(observations, weights)))
-
+ 
 
 
 
