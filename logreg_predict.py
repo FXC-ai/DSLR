@@ -84,11 +84,30 @@ def predict(data, thetas):
 
 
 i = 0
+p_p = 0
+n_n = 0
+p_n = 0
+n_p = 0
 for student in dataset_features_z:
     r= predict(student, thetas)
-    if r < 0.5:
-        print(r, "=> Something", dataset.iloc[i, dataset.columns.get_loc('Hogwarts House')])
+    if r <= 0.5:
+        if dataset.iloc[i, dataset.columns.get_loc('Hogwarts House')] != "Ravenclaw":
+            print(r, "\033[94m", "=> Something", dataset.iloc[i, dataset.columns.get_loc('Hogwarts House')], "\033[0m")
+            n_n += 1
+        else:
+            print(r, "\033[94m", "=> Something", dataset.iloc[i, dataset.columns.get_loc('Hogwarts House')], "\033[0m")
+
+            p_n +=1
     else:
-        print(r,"\033[94m", "=> Ravenclaw","\033[0m", dataset.iloc[i, dataset.columns.get_loc('Hogwarts House')])
+        if dataset.iloc[i, dataset.columns.get_loc('Hogwarts House')] != "Ravenclaw":
+            print(r,"\033[91m", "=> Ravenclaw","\033[0m", dataset.iloc[i, dataset.columns.get_loc('Hogwarts House')], "\033[0m")
+            n_p += 1
+        else:
+            print(r,"\033[94m", "=> Ravenclaw","\033[0m", dataset.iloc[i, dataset.columns.get_loc('Hogwarts House')], "\033[0m")
+            p_p +=1
     i+=1
+
+print (p_p, n_n, p_n, n_p)
+print(p_p + n_n, p_n + n_p)
+print((p_p + n_n) / (p_p + n_n + p_n + n_p))
 
