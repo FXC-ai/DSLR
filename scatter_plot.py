@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 # https://mrmint.fr/logistic-regression-machine-learning-introduction-simple
 # https://www.datacamp.com/fr/tutorial/understanding-logistic-regression-python
 # https://www.ibm.com/fr-fr/think/topics/logistic-regression
+# https://www.miximum.fr/blog/affaire-de-logistique/
 pd.set_option('display.width', 1000)
 dataset = pd.read_csv('dataset_train.csv')
 
@@ -65,7 +66,6 @@ fig = go.Figure(data=go.Splom(
                             line_color='white',
                             line_width=0.5)
                 ))
-
 
 fig.update_layout(
     margin=dict(l=200),  # Augmente l'espace à gauche (valeur par défaut : 80)
